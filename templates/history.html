@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}History | AI Multi-Language Translator{% endblock %}
+
+{% block content %}
+<section class="list-page glass-panel">
+    <div class="panel-heading page-heading">
+        <div>
+            <p class="eyebrow">Saved automatically</p>
+            <h1>Translation History</h1>
+        </div>
+        <!-- Export links removed -->
+    </div>
+    <div class="history-table">
+        {% for item in history %}
+        <article class="history-row">
+            <div>
+                <small>{{ item.created_at }}</small>
+                <strong>{{ item.original_text }}</strong>
+            </div>
+            <i class="fa-solid fa-arrow-right"></i>
+            <div>
+                <small>{{ languages.get(item.source_language, item.source_language) }} to {{ languages.get(item.target_language, item.target_language) }}</small>
+                <strong>{{ item.translated_text }}</strong>
+            </div>
+        </article>
+        {% else %}
+        <p class="empty-state">No history yet.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

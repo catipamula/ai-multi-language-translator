@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="workspace-grid">
+    <article class="translator-card glass-panel">
+        <header class="translator-header">
+            <div>
+                <p class="eyebrow">Real-time AI translation</p>
+                <h1>AI Multi-Language Translator</h1>
+            </div>
+            <div class="status-chip" id="detectedLabel">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                Auto detection ready
+            </div>
+        </header>
+
+        <div class="language-row">
+            <label class="select-wrap">
+                <span>Input</span>
+                <select id="sourceLanguage" class="form-select">
+                    {% for code, name in languages.items() %}
+                    <option value="{{ code }}" {% if code == "auto" %}selected{% endif %}>{{ name }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <button class="swap-button" id="swapLanguages" type="button" aria-label="Swap languages" title="Swap languages">
+                <i class="fa-solid fa-right-left"></i>
+            </button>
+            <label class="select-wrap">
+                <span>Output</span>
+                <select id="targetLanguage" class="form-select">
+                    {% for code, name in languages.items() if code != "auto" %}
+                    <option value="{{ code }}" {% if code == "te" %}selected{% endif %}>{{ name }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+        </div>
+
+        <div class="translation-grid">
+            <section class="text-pane">
+                <div class="pane-toolbar">
+                    <span>Original</span>
+                    <span id="charCount">0 / 5000</span>
+                </div>
+                <textarea id="inputText" maxlength="5000" placeholder="Enter text or use the microphone"></textarea>
+            </section>
+            <section class="text-pane output-pane">
+                <div class="pane-toolbar">
+                    <span>Translation</span>
+                    <span id="translationEngine">Ready</span>
+                </div>
+                <textarea id="outputText" readonly placeholder="Translation appears here"></textarea>
+                <div class="loading-layer" id="loadingLayer">
+                    <div class="loader"></div>
+                </div>
+            </section>
+        </div>
+
+        <div class="control-bar">
+            <button class="control-button" id="micButton" type="button" title="Microphone">
+                <i class="fa-solid fa-microphone"></i>
+            </button>
+            <button class="control-button" id="conversationButton" type="button" title="Conversation mode">
+                <i class="fa-solid fa-comments"></i>
+            </button>
+            <button class="control-button" id="copyButton" type="button" title="Copy translation">
+                <i class="fa-regular fa-copy"></i>
+            </button>
+            <button class="control-button" id="speakButton" type="button" title="Speak translation">
+                <i class="fa-solid fa-volume-high"></i>
+            </button>
+            <select class="voice-select" id="voiceSelect" aria-label="Voice preference">
+                <option value="female">Audio</option>
+              
+            </select>
+            <!-- Favorite button removed -->
+            <button class="control-button" id="clearButton" type="button" title="Clear">
+                <i class="fa-solid fa-trash-can"></i>
+            </button>
+            <button class="translate-button" id="translateButton" type="button">
+                <i class="fa-solid fa-arrow-right"></i>
+                Translate
+            </button>
+        </div>
+
+        <div class="conversation-strip" id="conversationStrip">
+            <i class="fa-solid fa-satellite-dish"></i>
+            <span>Conversation mode is listening in short live turns.</span>
+        </div>
+    </article>
+
+    <aside class="side-stack">
+        <section class="glass-panel sidebar-panel">
+            <div class="panel-heading">
+                    <h2>Recent History</h2>
+                </div>
+            <div class="mini-list" id="historyList">
+                {% for item in history %}
+                <article class="mini-card">
+                    <strong>{{ item.original_text }}</strong>
+                    <span>{{ item.translated_text }}</span>
+                    <small>{{ item.created_at }}</small>
+                </article>
+                {% else %}
+                <p class="empty-state">No translations yet.</p>
+                {% endfor %}
+            </div>
+        </section>
+
+        <!-- Favorites removed -->
+    </aside>
+</section>
+{% endblock %}
